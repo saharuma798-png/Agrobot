@@ -1,0 +1,836 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+
+/* ================================================= */
+/*                    RESET                          */
+/* ================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* ================================================= */
+/*                    BODY                           */
+/* ================================================= */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.30),
+            rgba(0, 0, 0, 0.30)
+        ),
+        url("./images/login.jpeg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+/* ================================================= */
+/*                  MAIN CONTAINER                   */
+/* ================================================= */
+
+.container {
+    position: relative;
+
+    width: 1100px;
+    height: 700px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-radius: 25px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ================================================= */
+/*                  FORM BOX                         */
+/* ================================================= */
+
+.form-box {
+    position: absolute;
+
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    padding: 40px;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: 0.6s ease-in-out;
+
+    z-index: 1;
+}
+
+
+/* ================================================= */
+/*                    LOGIN                          */
+/* ================================================= */
+
+.form-box.login {
+    right: 0;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    gap: 5px;
+}
+
+
+/* ================================================= */
+/*                 REGISTRATION                      */
+/* ================================================= */
+
+.form-box.register {
+    left: -50%;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    overflow-y: auto;
+
+    align-items: flex-start;
+}
+
+
+/* ================================================= */
+/*             ACTIVE - LOGIN                       */
+/* ================================================= */
+
+.container.active .form-box.login {
+    right: -50%;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+
+/* ================================================= */
+/*          ACTIVE - REGISTRATION                    */
+/* ================================================= */
+
+.container.active .form-box.register {
+    left: 0;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* ================================================= */
+/*                    FORM                          */
+/* ================================================= */
+
+.form-box form {
+    width: 100%;
+}
+
+
+/* ================================================= */
+/*                  HEADINGS                        */
+/* ================================================= */
+
+.form-box h1 {
+    font-size: 34px;
+
+    color: #222;
+
+    text-align: center;
+
+    margin-bottom: 8px;
+}
+
+
+.login-subtitle,
+.register-subtitle {
+    text-align: center;
+
+    font-size: 13px;
+
+    color: #777;
+
+    margin-bottom: 25px;
+}
+
+
+/* ================================================= */
+/*                 SECTION TITLE                     */
+/* ================================================= */
+
+.section-title {
+    font-size: 18px;
+
+    color: #558b2f;
+
+    margin: 18px 0 12px;
+
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+
+/* ================================================= */
+/*                 INPUT GROUP                      */
+/* ================================================= */
+
+.input-group {
+    width: 100%;
+
+    margin-bottom: 14px;
+}
+
+
+.input-group label {
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: #444;
+
+    margin-bottom: 6px;
+}
+
+
+.input-group label span {
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+/* ================================================= */
+/*                   NAME ROW                       */
+/* ================================================= */
+
+.name-row {
+    display: flex;
+
+    gap: 15px;
+
+    width: 100%;
+}
+
+
+.name-row .input-group {
+    flex: 1;
+}
+
+
+/* ================================================= */
+/*                  INPUT BOX                       */
+/* ================================================= */
+
+.input-box {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.input-box input {
+    width: 100%;
+
+    height: 50px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #f6f6f6;
+
+    padding: 0 45px 0 15px;
+
+    font-size: 14px;
+
+    color: #333;
+
+    transition: 0.3s;
+}
+
+
+.input-box input:focus {
+    background: #fff;
+
+    border-color: #66bb6a;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            102,
+            187,
+            106,
+            0.12
+        );
+}
+
+
+.input-box input::placeholder {
+    color: #999;
+}
+
+
+.input-box i {
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 20px;
+
+    color: #777;
+}
+
+
+/* ================================================= */
+/*              PASSWORD ICON                       */
+/* ================================================= */
+
+.password-toggle {
+    cursor: pointer;
+}
+
+
+.password-toggle:hover {
+    color: #43a047;
+}
+
+
+/* ================================================= */
+/*                LOGIN OPTIONS                      */
+/* ================================================= */
+
+.login-options {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin: 5px 0 20px;
+
+    font-size: 12px;
+}
+
+
+.remember-me {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    cursor: pointer;
+
+    color: #555;
+}
+
+
+.remember-me input {
+    accent-color: #43a047;
+
+    cursor: pointer;
+}
+
+
+.forgot-link a {
+    color: #43a047;
+
+    text-decoration: none;
+}
+
+
+.forgot-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* ================================================= */
+/*                    BUTTON                         */
+/* ================================================= */
+
+.btn {
+    width: 100%;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #66bb6a,
+            #2e7d32
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(
+            46,
+            125,
+            50,
+            0.3
+        );
+}
+
+
+/* ================================================= */
+/*              REGISTER BUTTON                     */
+/* ================================================= */
+
+.register-submit {
+    margin-top: 15px;
+
+    margin-bottom: 30px;
+}
+
+
+/* ================================================= */
+/*               LOGIN DIVIDER                      */
+/* ================================================= */
+
+.login-divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 25px 0 10px;
+}
+
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #ddd;
+}
+
+
+.login-divider span {
+    font-size: 11px;
+
+    color: #999;
+}
+
+
+.social-text {
+    text-align: center;
+
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 12px;
+}
+
+
+/* ================================================= */
+/*                 SOCIAL ICONS                     */
+/* ================================================= */
+
+.social-icons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+}
+
+
+.social-icons a {
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    color: #555;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    transition: 0.3s;
+}
+
+
+.social-icons a:hover {
+    color: #2e7d32;
+
+    border-color: #66bb6a;
+
+    background: #f1f8e9;
+
+    transform: translateY(-2px);
+}
+
+
+/* ================================================= */
+/*                   TOGGLE BOX                     */
+/* ================================================= */
+
+.toggle-box {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+/* ================================================= */
+/*                TOGGLE PANEL                     */
+/* ================================================= */
+
+.toggle-panel {
+    position: absolute;
+
+    top: 0;
+
+    width: 50%;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 40px;
+
+    color: white;
+
+   background: linear-gradient(135deg, hsl(131, 51%, 43%), #599b70);
+
+    transition: 0.6s ease-in-out;
+
+    pointer-events: auto;
+}
+
+
+/* ================================================= */
+/*                  LEFT PANEL                      */
+/* ================================================= */
+
+.toggle-left {
+    left: 0;
+}
+
+
+/* ================================================= */
+/*                 RIGHT PANEL                      */
+/* ================================================= */
+
+.toggle-right {
+    right: -50%;
+}
+
+
+/* ================================================= */
+/*             WHEN REGISTER ACTIVE                */
+/* ================================================= */
+
+.container.active .toggle-left {
+    left: -50%;
+}
+
+
+.container.active .toggle-right {
+    right: 0;
+}
+
+
+/* ================================================= */
+/*                 PANEL ICON                       */
+/* ================================================= */
+
+.panel-icon {
+    width: 75px;
+
+    height: 75px;
+
+    border: 2px solid rgba(
+        255,
+        255,
+        255,
+        0.8
+    );
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.panel-icon i {
+    font-size: 38px;
+}
+
+
+/* ================================================= */
+/*               PANEL HEADINGS                     */
+/* ================================================= */
+
+.toggle-panel h1 {
+    color: white;
+
+    font-size: 32px;
+
+    margin-bottom: 10px;
+}
+
+
+.toggle-panel p {
+    font-size: 13px;
+
+    color: rgba(
+        255,
+        255,
+        255,
+        0.9
+    );
+
+    margin-bottom: 25px;
+}
+
+
+/* ================================================= */
+/*              PANEL BUTTON                       */
+/* ================================================= */
+
+.toggle-panel .btn {
+    width: 170px;
+
+    background: transparent;
+
+    border: 2px solid white;
+
+    box-shadow: none;
+}
+
+
+.toggle-panel .btn:hover {
+    background: white;
+
+    color: #2e7d32;
+}
+
+
+/* ================================================= */
+/*             REGISTRATION SCROLL                  */
+/* ================================================= */
+
+.form-box.register::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.form-box.register::-webkit-scrollbar-thumb {
+    background: #aaa;
+
+    border-radius: 10px;
+}
+
+
+/* ================================================= */
+/*                    TABLET                        */
+/* ================================================= */
+
+@media screen and (max-width: 900px) {
+
+    .container {
+        width: 95%;
+
+        height: 680px;
+    }
+
+}
+
+
+/* ================================================= */
+/*                    MOBILE                        */
+/* ================================================= */
+
+@media screen and (max-width: 650px) {
+
+    body {
+        padding: 10px;
+    }
+
+
+    .container {
+        width: 100%;
+
+        height: 700px;
+
+        border-radius: 18px;
+    }
+
+
+    /* Hide side panel */
+
+    .toggle-box {
+        display: none;
+    }
+
+
+    /* Login */
+
+    .form-box.login {
+        width: 100%;
+
+        right: 0;
+
+        left: 0;
+
+        opacity: 1;
+
+        visibility: visible;
+    }
+
+
+    /* Registration */
+
+    .form-box.register {
+        width: 100%;
+
+        left: 0;
+
+        right: 0;
+
+        opacity: 0;
+
+        visibility: hidden;
+    }
+
+
+    /* Active login */
+
+    .container.active .form-box.login {
+        right: 100%;
+
+        opacity: 0;
+
+        visibility: hidden;
+    }
+
+
+    /* Active registration */
+
+    .container.active .form-box.register {
+        left: 0;
+
+        opacity: 1;
+
+        visibility: visible;
+    }
+
+
+    .name-row {
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+
+    .form-box {
+        padding: 30px 22px;
+    }
+
+
+    .form-box h1 {
+        font-size: 28px;
+    }
+
+}

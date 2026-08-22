@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Farmer Portal - Login & Registration</title>
+
+
+    <!-- ================= BOXICONS ================= -->
+
+    <link
+        href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- ================= CSS ================= -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================================================= -->
+    <!--                 MAIN CONTAINER                    -->
+    <!-- ================================================= -->
+
+    <div class="container" id="container">
+
+
+        <!-- ================================================= -->
+        <!--                    LOGIN FORM                     -->
+        <!-- ================================================= -->
+
+        <div class="form-box login">
+
+            <form id="loginForm">
+
+                <h1>Welcome Back</h1>
+
+                <p class="login-subtitle">
+                    Login to your Farmer Portal
+                </p>
+
+
+                <!-- Phone / Username -->
+
+                <div class="input-box">
+
+                    <input
+                        type="text"
+                        id="loginUsername"
+                        name="username"
+                        placeholder="Phone Number or Username"
+                        autocomplete="username"
+                        required
+                    >
+
+                    <i class="bx bxs-user"></i>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="input-box">
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <i
+                        class="bx bxs-lock-alt password-toggle"
+                        id="passwordIcon"
+                        onclick="togglePassword()"
+                    ></i>
+
+                </div>
+
+
+                <!-- Remember Me + Forgot Password -->
+
+                <div class="login-options">
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <div class="forgot-link">
+
+                        <a href="#">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Login
+                </button>
+
+
+                <!-- Divider -->
+
+                <div class="login-divider">
+
+                    <span>OR</span>
+
+                </div>
+
+
+                <p class="social-text">
+                    Continue with
+                </p>
+
+
+                <!-- Social Login -->
+
+                <div class="social-icons">
+
+                    <a href="#" title="Google">
+                        <i class="bx bxl-google"></i>
+                    </a>
+
+                    <a href="#" title="Facebook">
+                        <i class="bx bxl-facebook"></i>
+                    </a>
+
+                    <a href="#" title="GitHub">
+                        <i class="bx bxl-github"></i>
+                    </a>
+
+                    <a href="#" title="LinkedIn">
+                        <i class="bx bxl-linkedin"></i>
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!--              FARMER REGISTRATION                 -->
+        <!-- ================================================= -->
+
+        <div class="form-box register">
+
+            <form id="registrationForm">
+
+                <h1>Farmer Registration</h1>
+
+                <p class="register-subtitle">
+                    Create your Farmer Portal account
+                </p>
+
+
+                <!-- ================================================= -->
+                <!--                  PERSONAL DETAILS                 -->
+                <!-- ================================================= -->
+
+                <h2 class="section-title">
+                    Personal Details
+                </h2>
+
+
+                <!-- First Name + Last Name -->
+
+                <div class="name-row">
+
+
+                    <!-- First Name -->
+
+                    <div class="input-group">
+
+                        <label for="firstName">
+                            First Name
+                        </label>
+
+                        <div class="input-box">
+
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                placeholder="First Name"
+                                autocomplete="given-name"
+                                required
+                            >
+
+                            <i class="bx bxs-user"></i>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Last Name -->
+
+                    <div class="input-group">
+
+                        <label for="lastName">
+                            Last Name
+                        </label>
+
+                        <div class="input-box">
+
+                            <input
+                                type="text"
+                                id="lastName"
+                                name="lastName"
+                                placeholder="Last Name"
+                                autocomplete="family-name"
+                                required
+                            >
+
+                            <i class="bx bxs-user"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Phone Number -->
+
+                <div class="input-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Phone Number"
+                            autocomplete="tel"
+                            required
+                        >
+
+                        <i class="bx bxs-phone"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email
+                        <span>(Optional)</span>
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Email Address"
+                            autocomplete="email"
+                        >
+
+                        <i class="bx bxs-envelope"></i>
+
+                    </div>
+
+                </div>
+
+
+
+              
+
+
+
+                <!-- ================================================= -->
+                <!--                ACCOUNT DETAILS                    -->
+                <!-- ================================================= -->
+
+                <h2 class="section-title">
+                    Account Details
+                </h2>
+
+                <div class="input-group">
+                    <label for="registerUsername">
+                        Username
+                    </label>
+                    <div class="input-box">
+                        <input
+                            type="text"
+                            id="registerUsername"
+                            name="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        >
+                        <i class="bx bxs-user"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="registerPassword">
+                        Password
+                    </label>
+                    <div class="input-box">
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <i class="bx bxs-lock-alt"></i>
+                    </div>
+                </div>
+
+                <!-- ================================================= -->
+                <!--                  FARMER ADDRESS                   -->
+                <!-- ================================================= -->
+
+                <h2 class="section-title">
+                    Farmer Address
+                </h2>
+
+
+                <!-- Street Address -->
+
+                <div class="input-group">
+
+                    <label for="streetAddress">
+                        Street Address
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="text"
+                            id="streetAddress"
+                            name="streetAddress"
+                            placeholder="Street Address"
+                            autocomplete="street-address"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Street Address Line 2 -->
+
+                <div class="input-group">
+
+                    <label for="streetAddress2">
+
+                        Street Address Line 2
+
+                        <span>
+                            (Optional)
+                        </span>
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="text"
+                            id="streetAddress2"
+                            name="streetAddress2"
+                            placeholder="Apartment, Village, Landmark, etc."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- City + Region -->
+
+                <div class="name-row">
+
+
+                    <!-- City -->
+
+                    <div class="input-group">
+
+                        <label for="city">
+                            City
+                        </label>
+
+                        <div class="input-box">
+
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                placeholder="City"
+                                autocomplete="address-level2"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Region -->
+
+                    <div class="input-group">
+
+                        <label for="region">
+                            Region / State
+                        </label>
+
+                        <div class="input-box">
+
+                            <input
+                                type="text"
+                                id="region"
+                                name="region"
+                                placeholder="Region / State"
+                                autocomplete="address-level1"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Postal Code -->
+
+                <div class="input-group">
+
+                    <label for="postalCode">
+                        Postal / ZIP Code
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="text"
+                            id="postalCode"
+                            name="postalCode"
+                            placeholder="Postal / ZIP Code"
+                            autocomplete="postal-code"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Register Button -->
+
+                <button
+                    type="submit"
+                    class="btn register-submit"
+                >
+                    Create Farmer Account
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!--                    TOGGLE BOX                     -->
+        <!-- ================================================= -->
+
+        <div class="toggle-box">
+
+
+            <!-- ================= LEFT PANEL ================= -->
+
+            <div class="toggle-panel toggle-left">
+
+                <div class="panel-icon">
+
+                    <i class="bx bx-leaf"></i>
+
+                </div>
+
+                <h1>
+                    Hello, Farmer!
+                </h1>
+
+                <p>
+                    Don't have a Farmer Portal account?
+                </p>
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="showRegister()"
+                >
+                    Register
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= RIGHT PANEL ================= -->
+
+            <div class="toggle-panel toggle-right">
+
+                <div class="panel-icon">
+
+                    <i class="bx bx-leaf"></i>
+
+                </div>
+
+                <h1>
+                    Welcome Back!
+                </h1>
+
+                <p>
+                    Already have a Farmer Portal account?
+                </p>
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="showLogin()"
+                >
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!--                  JAVASCRIPT                      -->
+    <!-- ================================================= -->
+
+    <script>
+
+
+        /* ============================================= */
+        /*              SHOW REGISTRATION                */
+        /* ============================================= */
+
+        function showRegister() {
+
+            document
+                .getElementById("container")
+                .classList.add("active");
+
+        }
+
+
+
+        /* ============================================= */
+        /*                  SHOW LOGIN                   */
+        /* ============================================= */
+
+        function showLogin() {
+
+            document
+                .getElementById("container")
+                .classList.remove("active");
+
+        }
+
+
+
+        /* ============================================= */
+        /*               SHOW / HIDE PASSWORD             */
+        /* ============================================= */
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById("loginPassword");
+
+            const icon =
+                document.getElementById("passwordIcon");
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                icon.classList.remove(
+                    "bxs-lock-alt"
+                );
+
+                icon.classList.add(
+                    "bxs-lock-open-alt"
+                );
+
+            }
+
+            else {
+
+                password.type = "password";
+
+                icon.classList.remove(
+                    "bxs-lock-open-alt"
+                );
+
+                icon.classList.add(
+                    "bxs-lock-alt"
+                );
+
+            }
+
+        }
+
+
+
+        /* ============================================= */
+        /*               LOGIN SUBMISSION                */
+        /* ============================================= */
+
+        document
+            .getElementById("loginForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+                    const username =
+                        document.getElementById("loginUsername").value.trim();
+
+                    const password =
+                        document.getElementById("loginPassword").value;
+
+                    const button = this.querySelector("button[type='submit']");
+                    button.disabled = true;
+                    button.textContent = "Logging in...";
+
+                    try {
+                        const response = await fetch("/login", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                username: username,
+                                password: password
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && data.success) {
+                            window.location.href = data.redirect;
+                            return;
+                        }
+
+                        alert(data.message || "Invalid username or password.");
+                    } catch (error) {
+                        alert("Unable to connect to the server. Please try again.");
+                    } finally {
+                        button.disabled = false;
+                        button.textContent = "Login";
+                    }
+                }
+            );
+
+
+
+        /* ============================================= */
+        /*            REGISTRATION SUBMISSION            */
+        /* ============================================= */
+
+        document
+            .getElementById("registrationForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+                    event.preventDefault();
+
+                    const formData = new FormData(this);
+                    const payload = Object.fromEntries(formData.entries());
+
+                    try {
+                        const response = await fetch("/register", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok && data.success) {
+                            alert("Farmer account created successfully. You can now log in.");
+                            this.reset();
+                            showLogin();
+                            return;
+                        }
+
+                        alert(data.message || "Registration failed.");
+                    } catch (error) {
+                        alert("Unable to connect to the server. Please try again.");
+                    }
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>
