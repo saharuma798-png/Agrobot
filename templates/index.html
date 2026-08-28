@@ -1,351 +1,1660 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGROBOAT | CODE TO GROWTH</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>AGROBOT | NexAI</title>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-html,body{
-height:100%;
-width:100%;
-}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-body{
-min-height:100svh;
-padding:10px; /* ✅ added for mobile spacing */
-background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
-url("{{ url_for('static', filename='agro3.png') }}");
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+    <style>
 
-/* ✅ UPDATED scaling */
-.chat-container{
-width:100%;
-max-width:420px;
-height:100%;
-max-height:90vh;
-min-height:500px;
-background:rgba(2,6,23,0.85);
-backdrop-filter:blur(12px);
-border-radius:18px;
-display:flex;
-flex-direction:column;
-overflow:hidden;
-box-shadow:0 20px 50px rgba(0,0,0,0.4);
-}
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
 
-/* ✅ Mobile fix */
-@media (max-width: 480px){
-.chat-container{
-height:100%;
-max-height:100vh;
-border-radius:0;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+        }
 
-body{
-padding:0;
-}
-}
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
 
-.chat-header{
-background:linear-gradient(135deg,#22c55e,#16a34a);
-padding:16px;
-text-align:center;
-color:white;
-}
+        body {
+            min-height: 100svh;
 
-.chat-box{
-flex:1;
-padding:15px;
-overflow-y:auto;
-display:flex;
-flex-direction:column;
-gap:12px;
-background:#030c29;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-.message{
-max-width:80%;
-padding:10px 14px;
-border-radius:14px;
-font-size:0.9rem;
-line-height:1.4;
-white-space:pre-line;
-animation:fadeIn .3s ease;
-}
+            padding: 24px;
 
-.bot{background:#1e293b;color:#e5e7eb;align-self:flex-start;}
-.user{background:#22c55e;color:#022c22;align-self:flex-end;}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(2, 12, 8, 0.82),
+                    rgba(3, 30, 18, 0.72)
+                ),
+                url("{{ url_for('static', filename='agro3.jpeg') }}");
 
-.time{
-font-size:.65rem;
-opacity:.6;
-margin-top:4px;
-}
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
 
-.typing{
-font-size:.8rem;
-opacity:.7;
-}
+            color: #e5e7eb;
+        }
 
-.chat-input{
-display:flex;
-padding:10px;
-background:#020617;
-}
 
-.chat-input input{
-flex:1;
-padding:10px;
-border-radius:10px;
-border:none;
-background:#1e293b;
-color:white;
-}
+        /* =========================================================
+           MAIN APPLICATION
+        ========================================================= */
 
-.chat-input button{
-margin-left:8px;
-background:#22c55e;
-border:none;
-padding:0 16px;
-border-radius:10px;
-cursor:pointer;
-}
+        .chat-container {
 
-.quick-area{display:flex;flex-wrap:wrap;gap:6px;}
+            width: 100%;
+            max-width: 440px;
 
-.quick{
-background:#1e293b;
-color:#e5e7eb;
-border:none;
-padding:6px 10px;
-border-radius:8px;
-cursor:pointer;
-font-size:.75rem;
-}
+            height: 720px;
+            max-height: calc(100svh - 48px);
 
-.quick:hover{background:#334155;}
-#micBtn{background:#0ea5e9;color:white;}
+            display: flex;
+            flex-direction: column;
 
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(6px);}
-to{opacity:1;transform:translateY(0);}
-}
-</style>
+            overflow: hidden;
+
+            background:
+                rgba(8, 15, 20, 0.88);
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 28px;
+
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.55),
+                0 0 0 1px rgba(255, 255, 255, 0.03);
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .chat-header {
+
+            position: relative;
+
+            padding: 20px 20px 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18, 74, 42, 0.98),
+                    rgba(10, 54, 31, 0.96)
+                );
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+            text-align: center;
+        }
+
+
+        .brand-row {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+        }
+
+
+        .brand-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            border: 1px solid rgba(255, 255, 255, 0.18);
+
+            font-size: 22px;
+
+            box-shadow:
+                inset 0 1px rgba(255,255,255,.12);
+        }
+
+
+        .chat-header h1 {
+
+            color: #ffffff;
+
+            font-size: 1.55rem;
+
+            font-weight: 800;
+
+            letter-spacing: -0.6px;
+        }
+
+
+        .brand-subtitle {
+
+            margin-top: 4px;
+
+            color: #bbf7d0;
+
+            font-size: 0.76rem;
+
+            font-weight: 500;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        /* =========================================================
+           USER INFO
+        ========================================================= */
+
+        .user-info {
+
+            margin-top: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            font-size: 0.72rem;
+
+            color: #d1fae5;
+        }
+
+
+        .user-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #4ade80;
+
+            box-shadow:
+                0 0 10px rgba(74, 222, 128, 0.8);
+        }
+
+
+        .logout-link {
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            opacity: 0.85;
+
+            transition: 0.2s ease;
+        }
+
+
+        .logout-link:hover {
+
+            opacity: 1;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================================
+           LANGUAGE
+        ========================================================= */
+
+        .language-wrapper {
+
+            margin-top: 12px;
+
+            display: flex;
+            justify-content: center;
+        }
+
+
+        #langSelect {
+
+            appearance: none;
+
+            min-width: 150px;
+
+            padding: 8px 34px 8px 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid rgba(255,255,255,.15);
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,.10);
+
+            color: white;
+
+            font-size: 0.74rem;
+
+            cursor: pointer;
+        }
+
+
+        #langSelect option {
+
+            color: #111827;
+
+            background: white;
+        }
+
+
+        /* =========================================================
+           CHAT AREA
+        ========================================================= */
+
+        .chat-box {
+
+            flex: 1;
+
+            padding: 18px;
+
+            overflow-y: auto;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(4, 16, 25, 0.92),
+                    rgba(2, 10, 18, 0.97)
+                );
+
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+
+
+        .chat-box::-webkit-scrollbar {
+
+            width: 5px;
+        }
+
+
+        .chat-box::-webkit-scrollbar-thumb {
+
+            background: #334155;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+        .message {
+
+            width: fit-content;
+
+            max-width: 82%;
+
+            padding: 10px 13px;
+
+            border-radius: 15px;
+
+            font-size: 0.78rem;
+
+            line-height: 1.5;
+
+            white-space: pre-line;
+
+            animation: messageIn .25s ease;
+
+            word-wrap: break-word;
+        }
+
+
+        .bot {
+
+            align-self: flex-start;
+
+            color: #e5e7eb;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(31, 41, 55, 0.96),
+                    rgba(22, 31, 43, 0.96)
+                );
+
+            border: 1px solid rgba(255,255,255,.07);
+
+            border-top-left-radius: 5px;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,.12);
+        }
+
+
+        .user {
+
+            align-self: flex-end;
+
+            color: #052e16;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4ade80,
+                    #22c55e
+                );
+
+            border-top-right-radius: 5px;
+
+            font-weight: 500;
+
+            box-shadow:
+                0 6px 18px rgba(34,197,94,.18);
+        }
+
+
+        .time {
+
+            margin-top: 5px;
+
+            font-size: 0.59rem;
+
+            opacity: 0.48;
+        }
+
+
+        /* =========================================================
+           WELCOME CARD
+        ========================================================= */
+
+        .welcome-message {
+
+            max-width: 78%;
+
+            padding: 12px 14px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(30, 41, 59, 0.98),
+                    rgba(15, 35, 27, 0.96)
+                );
+
+            border: 1px solid rgba(74,222,128,.12);
+        }
+
+
+        .welcome-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 4px;
+
+            font-weight: 700;
+
+            color: #ffffff;
+        }
+
+
+        .welcome-title span {
+
+            color: #4ade80;
+        }
+
+
+        /* =========================================================
+           QUICK ACTIONS
+        ========================================================= */
+
+        .quick-heading {
+
+            margin-top: 4px;
+
+            color: #64748b;
+
+            font-size: 0.64rem;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        .quick-area {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 8px;
+
+            margin-top: 2px;
+        }
+
+
+        .quick {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 9px 11px;
+
+            border-radius: 11px;
+
+            border: 1px solid rgba(255,255,255,.07);
+
+            background:
+                rgba(30, 41, 59, 0.76);
+
+            color: #cbd5e1;
+
+            font-size: 0.69rem;
+
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition:
+                transform .2s ease,
+                background .2s ease,
+                border .2s ease;
+        }
+
+
+        .quick:hover {
+
+            transform: translateY(-2px);
+
+            background:
+                rgba(51, 65, 85, 0.9);
+
+            border-color:
+                rgba(74,222,128,.2);
+        }
+
+
+        .quick-icon {
+
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(74,222,128,.10);
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           TYPING
+        ========================================================= */
+
+        .typing {
+
+            color: #94a3b8;
+
+            font-size: 0.68rem;
+
+            background: rgba(30,41,59,.65);
+
+            font-style: italic;
+        }
+
+
+        /* =========================================================
+           INPUT AREA
+        ========================================================= */
+
+        .input-area {
+
+            padding: 11px;
+
+            background:
+                rgba(2, 8, 14, 0.97);
+
+            border-top:
+                1px solid rgba(255,255,255,.07);
+        }
+
+
+        .chat-input {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 6px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(30, 41, 59, 0.72);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            transition: border .2s ease;
+        }
+
+
+        .chat-input:focus-within {
+
+            border-color:
+                rgba(74,222,128,.38);
+
+            box-shadow:
+                0 0 0 3px rgba(34,197,94,.06);
+        }
+
+
+        .chat-input input[type="text"],
+        #userInput {
+
+            flex: 1;
+
+            min-width: 0;
+
+            height: 38px;
+
+            padding: 0 10px;
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            color: #f8fafc;
+
+            font-size: 0.76rem;
+        }
+
+
+        #userInput::placeholder {
+
+            color: #64748b;
+        }
+
+
+        .action-btn {
+
+            flex-shrink: 0;
+
+            width: 37px;
+            height: 37px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition:
+                transform .2s ease,
+                background .2s ease;
+        }
+
+
+        .action-btn:hover {
+
+            transform: translateY(-1px);
+        }
+
+
+        #micBtn {
+
+            background:
+                rgba(14,165,233,.18);
+
+            color: #38bdf8;
+
+            border:
+                1px solid rgba(14,165,233,.12);
+        }
+
+
+        #micBtn:hover {
+
+            background:
+                rgba(14,165,233,.28);
+        }
+
+
+        .camera-btn {
+
+            background:
+                rgba(168,85,247,.16);
+
+            color: #c084fc;
+
+            border:
+                1px solid rgba(168,85,247,.12);
+        }
+
+
+        .camera-btn:hover {
+
+            background:
+                rgba(168,85,247,.27);
+        }
+
+
+        .send-btn {
+
+            width: auto;
+
+            padding: 0 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #22c55e,
+                    #16a34a
+                );
+
+            color: #022c22;
+
+            font-size: 0.72rem;
+
+            font-weight: 700;
+
+            border:
+                1px solid rgba(74,222,128,.15);
+        }
+
+
+        .send-btn:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4ade80,
+                    #22c55e
+                );
+        }
+
+
+        /* =========================================================
+           FOOTER STATUS
+        ========================================================= */
+
+        .status-bar {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 5px;
+
+            margin-top: 7px;
+
+            color: #475569;
+
+            font-size: 0.58rem;
+        }
+
+
+        .status-dot {
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow:
+                0 0 7px rgba(34,197,94,.7);
+        }
+
+
+        /* =========================================================
+           ANIMATION
+        ========================================================= */
+
+        @keyframes messageIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(6px)
+                    scale(.98);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 0;
+
+                background-attachment: scroll;
+            }
+
+
+            .chat-container {
+
+                width: 100%;
+
+                height: 100svh;
+
+                max-height: 100svh;
+
+                border-radius: 0;
+
+                border: none;
+            }
+
+
+            .chat-header {
+
+                padding:
+                    17px
+                    16px
+                    14px;
+            }
+
+
+            .chat-box {
+
+                padding: 14px;
+            }
+
+
+            .message {
+
+                max-width: 88%;
+
+                font-size: 0.77rem;
+            }
+        }
+
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 380px) {
+
+            .brand-icon {
+
+                width: 38px;
+                height: 38px;
+            }
+
+
+            .chat-header h1 {
+
+                font-size: 1.35rem;
+            }
+
+
+            .quick {
+
+                font-size: 0.64rem;
+
+                padding: 8px;
+            }
+
+
+            .send-btn {
+
+                padding: 0 12px;
+            }
+        }
+
+    </style>
 </head>
+
 
 <body>
 
+
 <div class="chat-container">
-<div class="chat-header">
-<h1>🌱 AGROBOAT</h1>
-<p>Powered by CODE TO GROWTH</p>
-<div style="margin-top:6px;font-size:.75rem;">
-Logged in as <b>{{ session.get("farmer_name", session.get("username", "Farmer")) }}</b>
-<a href="{{ url_for('logout') }}" style="color:white;margin-left:8px;">Logout</a>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header class="chat-header">
+
+        <div class="brand-row">
+
+            <div class="brand-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h1>AGROBOT</h1>
+
+                <div class="brand-subtitle">
+                    Powered by NexAI
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="user-info">
+
+            <span class="user-dot"></span>
+
+            <span>
+                Logged in as
+                <b>
+                    {{ session.get("farmer_name", session.get("username", "Farmer")) }}
+                </b>
+            </span>
+
+            <a
+                class="logout-link"
+                href="{{ url_for('logout') }}"
+            >
+                Logout
+            </a>
+
+        </div>
+
+
+        <div class="language-wrapper">
+
+            <select id="langSelect">
+
+                <option value="auto">
+                    🌐 Auto
+                </option>
+
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="bn">Bengali</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="mr">Marathi</option>
+                <option value="gu">Gujarati</option>
+                <option value="kn">Kannada</option>
+                <option value="ml">Malayalam</option>
+                <option value="pa">Punjabi</option>
+                <option value="or">Odia</option>
+                <option value="as">Assamese</option>
+                <option value="ur">Urdu</option>
+                <option value="ne">Nepali</option>
+                <option value="kok">Konkani</option>
+                <option value="mai">Maithili</option>
+                <option value="sd">Sindhi</option>
+                <option value="mni">Manipuri</option>
+                <option value="doi">Dogri</option>
+                <option value="ks">Kashmiri</option>
+                <option value="sat">Santali</option>
+                <option value="bho">Bhojpuri</option>
+
+            </select>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         CHAT
+    ========================================================== -->
+
+    <main
+        class="chat-box"
+        id="chatBox"
+    >
+
+
+        <!-- Welcome -->
+
+        <div class="message bot welcome-message">
+
+            <div class="welcome-title">
+                👋
+                <span>AGROBOT</span>
+            </div>
+
+            <div>
+                Your AI farming assistant is ready.
+            </div>
+
+            <div>
+                Ask me about crops, weather, fertilizers or diseases.
+            </div>
+
+            <div class="time">
+                Just now
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+
+        <div class="quick-heading">
+            Quick actions
+        </div>
+
+
+        <div class="quick-area">
+
+
+            <button
+                class="quick"
+                onclick="quickMsg('Check weather')"
+            >
+
+                <span class="quick-icon">
+                    ☁️
+                </span>
+
+                Weather
+
+            </button>
+
+
+            <button
+                class="quick"
+                onclick="quickMsg('Fertilizer recommendation')"
+            >
+
+                <span class="quick-icon">
+                    🌿
+                </span>
+
+                Fertilizer
+
+            </button>
+
+
+            <button
+                class="quick"
+                onclick="quickMsg('Crop suggestion')"
+            >
+
+                <span class="quick-icon">
+                    🌾
+                </span>
+
+                Crop Suggestion
+
+            </button>
+
+
+            <button
+                class="quick"
+                onclick="quickMsg('Government schemes for farmers')"
+            >
+
+                <span class="quick-icon">
+                    📋
+                </span>
+
+                Schemes
+
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- =========================================================
+         INPUT
+    ========================================================== -->
+
+    <footer class="input-area">
+
+
+        <div class="chat-input">
+
+
+            <input
+                id="userInput"
+                type="text"
+                placeholder="Ask AGROBOT anything..."
+                autocomplete="off"
+            >
+
+
+            <button
+                id="micBtn"
+                class="action-btn"
+                title="Voice input"
+                type="button"
+            >
+                🎙️
+            </button>
+
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                capture="environment"
+                hidden
+            >
+
+
+            <button
+                class="action-btn camera-btn"
+                onclick="openCamera()"
+                title="Upload crop image"
+                type="button"
+            >
+                📷
+            </button>
+
+
+            <button
+                class="action-btn send-btn"
+                onclick="sendMessage()"
+                type="button"
+            >
+                Send
+            </button>
+
+
+        </div>
+
+
+        <div class="status-bar">
+
+            <span class="status-dot"></span>
+
+            AGROBOT is online
+
+            <span>•</span>
+
+            NexAI
+
+        </div>
+
+
+    </footer>
+
+
 </div>
 
-<select id="langSelect" style="margin-top:8px;padding:6px;border-radius:8px;">
-<option value="auto">🌐 Auto</option>
-<option value="en">English</option>
-<option value="hi">Hindi</option>
-<option value="bn">Bengali</option>
-<option value="ta">Tamil</option>
-<option value="te">Telugu</option>
-<option value="mr">Marathi</option>
-<option value="gu">Gujarati</option>
-<option value="kn">Kannada</option>
-<option value="ml">Malayalam</option>
-<option value="pa">Punjabi</option>
-<option value="or">Odia</option>
-<option value="as">Assamese</option>
-<option value="ur">Urdu</option>
-<option value="ne">Nepali</option>
-<option value="kok">Konkani</option>
-<option value="mai">Maithili</option>
-<option value="sd">Sindhi</option>
-<option value="mni">Manipuri</option>
-<option value="doi">Dogri</option>
-<option value="ks">Kashmiri</option>
-<option value="sat">Santali</option>
-<option value="bho">Bhojpuri</option>
-</select>
 
-</div>
-
-<div class="chat-box" id="chatBox">
-
-<div class="message bot">
-Hello 👋 I'm <b>AGROBOAT</b>.
-How can I help you today?
-<div class="time">Just now</div>
-</div>
-
-<div class="quick-area">
-<button class="quick" onclick="quickMsg('Check weather')">Weather</button>
-<button class="quick" onclick="quickMsg('Fertilizer recommendation')">Fertilizer</button>
-<button class="quick" onclick="quickMsg('Crop suggestion')">Crop</button>
-<button class="quick" onclick="quickMsg('Government schemes for farmers')">Schemes</button>
-</div>
-
-</div>
-
-<div class="chat-input">
-<input id="userInput" placeholder="Type your message..." autocomplete="off"/>
-<button id="micBtn">🎤</button>
-
-<input type="file" id="imageInput" accept="image/*" capture="environment" hidden>
-<button onclick="openCamera()">📷</button>
-
-<button onclick="sendMessage()">Send</button>
-</div>
-</div>
 
 <script>
-const chatBox=document.getElementById("chatBox");
-const userInput=document.getElementById("userInput");
-const micBtn=document.getElementById("micBtn");
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const chatBox =
+    document.getElementById("chatBox");
+
+const userInput =
+    document.getElementById("userInput");
+
+const micBtn =
+    document.getElementById("micBtn");
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const langSelect =
+    document.getElementById("langSelect");
+
 
 userInput.focus();
 
-let currentLang="auto";
 
-document.getElementById("langSelect").addEventListener("change",(e)=>{
-currentLang=e.target.value;
-});
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+let currentLang = "auto";
+
+
+langSelect.addEventListener(
+    "change",
+    (e) => {
+
+        currentLang =
+            e.target.value;
+
+    }
+);
+
+
+/* =========================================================
+   TIME
+========================================================= */
 
 function timeNow(){
-return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+    return new Date().toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
 }
 
-function addMessage(text,sender){
-const msg=document.createElement("div");
-msg.classList.add("message",sender);
-msg.innerHTML=text + `<div class="time">${timeNow()}</div>`;
-chatBox.appendChild(msg);
-chatBox.scrollTop=chatBox.scrollHeight;
+
+/* =========================================================
+   ADD MESSAGE
+========================================================= */
+
+function addMessage(
+    text,
+    sender
+){
+
+    const msg =
+        document.createElement("div");
+
+
+    msg.classList.add(
+        "message",
+        sender
+    );
+
+
+    msg.innerHTML =
+        text +
+        `
+        <div class="time">
+            ${timeNow()}
+        </div>
+        `;
+
+
+    chatBox.appendChild(msg);
+
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+
 }
+
+
+/* =========================================================
+   TYPING INDICATOR
+========================================================= */
 
 function showTyping(){
-const typing=document.createElement("div");
-typing.classList.add("message","bot","typing");
-typing.id="typing";
-typing.innerText="AGROBOAT is typing...";
-chatBox.appendChild(typing);
-chatBox.scrollTop=chatBox.scrollHeight;
+
+    const typing =
+        document.createElement("div");
+
+
+    typing.classList.add(
+        "message",
+        "bot",
+        "typing"
+    );
+
+
+    typing.id =
+        "typing";
+
+
+    typing.innerText =
+        "AGROBOT is thinking...";
+
+
+    chatBox.appendChild(
+        typing
+    );
+
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+
 }
+
+
+/* =========================================================
+   REMOVE TYPING
+========================================================= */
 
 function removeTyping(){
-const t=document.getElementById("typing");
-if(t) t.remove();
+
+    const typing =
+        document.getElementById(
+            "typing"
+        );
+
+
+    if(typing){
+
+        typing.remove();
+
+    }
+
 }
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
 
 function sendMessage(){
-const text=userInput.value.trim();
-if(!text) return;
 
-addMessage(text,"user");
-userInput.value="";
+    const text =
+        userInput.value.trim();
 
-showTyping();
 
-fetch("/chat",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-message:text,
-lang:currentLang
-})
-})
-.then(r=>r.json())
-.then(d=>{
-removeTyping();
-addMessage(d.reply,"bot");
-})
-.catch(()=>{
-removeTyping();
-addMessage("Server error","bot");
-});
+    if(!text){
+
+        return;
+
+    }
+
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    userInput.value = "";
+
+
+    showTyping();
+
+
+    fetch(
+        "/chat",
+        {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+
+                message: text,
+
+                lang: currentLang
+
+            })
+
+        }
+    )
+
+
+    .then(
+        response => response.json()
+    )
+
+
+    .then(
+        data => {
+
+            removeTyping();
+
+
+            addMessage(
+                data.reply ||
+                "I couldn't generate a response.",
+                "bot"
+            );
+
+        }
+    )
+
+
+    .catch(
+        () => {
+
+            removeTyping();
+
+
+            addMessage(
+                "Server error. Please try again.",
+                "bot"
+            );
+
+        }
+    );
+
 }
+
+
+/* =========================================================
+   QUICK ACTION
+========================================================= */
 
 function quickMsg(text){
-userInput.value=text;
-sendMessage();
+
+    userInput.value =
+        text;
+
+    sendMessage();
+
 }
 
-userInput.addEventListener("keypress",e=>{
-if(e.key==="Enter") sendMessage();
-});
 
-const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+/* =========================================================
+   ENTER KEY
+========================================================= */
+
+userInput.addEventListener(
+    "keypress",
+    (e) => {
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
 
 if(SpeechRecognition){
-const recognition=new SpeechRecognition();
 
-micBtn.onclick=()=>{
-recognition.lang = currentLang==="hi" ? "hi-IN" :
-                   currentLang==="bn" ? "bn-IN" :
-                   "en-IN";
-recognition.start();
-micBtn.style.background="red";
-};
+    const recognition =
+        new SpeechRecognition();
 
-recognition.onresult=e=>{
-userInput.value=e.results[0][0].transcript;
-sendMessage();
-};
 
-recognition.onend=()=>micBtn.style.background="#0ea5e9";
-}else{
-micBtn.disabled=true;
+    recognition.continuous =
+        false;
+
+
+    recognition.interimResults =
+        false;
+
+
+    micBtn.onclick = () => {
+
+        recognition.lang =
+            currentLang === "hi"
+                ? "hi-IN"
+                : currentLang === "bn"
+                ? "bn-IN"
+                : "en-IN";
+
+
+        try {
+
+            recognition.start();
+
+            micBtn.style.background =
+                "#ef4444";
+
+            micBtn.innerText =
+                "⏺️";
+
+        }
+        catch(error){
+
+            console.log(
+                "Speech recognition error:",
+                error
+            );
+
+        }
+
+    };
+
+
+    recognition.onresult =
+        (e) => {
+
+            userInput.value =
+                e.results[0][0]
+                    .transcript;
+
+            sendMessage();
+
+        };
+
+
+    recognition.onend =
+        () => {
+
+            micBtn.style.background =
+                "";
+
+            micBtn.innerText =
+                "🎙️";
+
+        };
+
+
+    recognition.onerror =
+        () => {
+
+            micBtn.style.background =
+                "";
+
+            micBtn.innerText =
+                "🎙️";
+
+        };
+
 }
+else{
+
+    micBtn.disabled =
+        true;
+
+}
+
+
+/* =========================================================
+   CAMERA / IMAGE UPLOAD
+========================================================= */
 
 function openCamera(){
-document.getElementById("imageInput").click();
+
+    imageInput.click();
+
 }
 
-document.getElementById("imageInput").addEventListener("change", function(){
-const file=this.files[0];
-if(!file) return;
 
-addMessage("📷 Image uploaded","user");
-showTyping();
+imageInput.addEventListener(
+    "change",
+    function(){
 
-const formData=new FormData();
-formData.append("image",file);
-formData.append("lang",currentLang);
+        const file =
+            this.files[0];
 
-fetch("/detect_disease",{
-method:"POST",
-body:formData
-})
-.then(res=>res.json())
-.then(data=>{
-removeTyping();
 
-let result = `
-🌿 <b>Detected Disease:</b> ${data.disease || "Unknown"}<br>
-🔍 <b>Symptoms:</b> ${data.symptoms || "Not detected"}<br><br>
-💡 ${data.reply}
-`;
+        if(!file){
 
-addMessage(result,"bot");
-})
-.catch(()=>{
-removeTyping();
-addMessage("Error analyzing image","bot");
-});
-});
+            return;
+
+        }
+
+
+        addMessage(
+            "📷 Crop image uploaded",
+            "user"
+        );
+
+
+        showTyping();
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "image",
+            file
+        );
+
+
+        formData.append(
+            "lang",
+            currentLang
+        );
+
+
+        fetch(
+            "/detect_disease",
+            {
+                method: "POST",
+                body: formData
+            }
+        )
+
+
+        .then(
+            response =>
+                response.json()
+        )
+
+
+        .then(
+            data => {
+
+                removeTyping();
+
+
+                const result = `
+
+                    🌿 <b>Detected Disease:</b>
+                    ${data.disease || "Unknown"}
+
+                    <br>
+
+                    🔍 <b>Symptoms:</b>
+                    ${data.symptoms || "Not detected"}
+
+                    <br><br>
+
+                    💡 ${data.reply || "No recommendation available."}
+
+                `;
+
+
+                addMessage(
+                    result,
+                    "bot"
+                );
+
+            }
+        )
+
+
+        .catch(
+            () => {
+
+                removeTyping();
+
+
+                addMessage(
+                    "Unable to analyze the image. Please try again.",
+                    "bot"
+                );
+
+            }
+        );
+
+
+        /* Allow the same image to be selected again */
+
+        this.value = "";
+
+    }
+);
+
 </script>
 
 </body>
+
 </html>
