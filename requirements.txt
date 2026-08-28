@@ -1,7 +1,9 @@
 Flask
 Flask-SQLAlchemy
-google-generativeai
 requests
 Pillow
+python-dotenv
+groq
+google-generativeai
 gunicorn
 Werkzeug
