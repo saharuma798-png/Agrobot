@@ -1,945 +1,664 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AGROBOT | NexAI</title>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <style>
-
-        /* =========================================================
-           GLOBAL
-        ========================================================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Inter", sans-serif;
-        }
-
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            min-height: 100svh;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 24px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(2, 12, 8, 0.82),
-                    rgba(3, 30, 18, 0.72)
-                ),
-                url("{{ url_for('static', filename='agro3.jpeg') }}");
-
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-
-            color: #e5e7eb;
-        }
-
-
-        /* =========================================================
-           MAIN APPLICATION
-        ========================================================= */
-
-        .chat-container {
-
-            width: 100%;
-            max-width: 440px;
-
-            height: 720px;
-            max-height: calc(100svh - 48px);
-
-            display: flex;
-            flex-direction: column;
-
-            overflow: hidden;
-
-            background:
-                rgba(8, 15, 20, 0.88);
-
-            border: 1px solid rgba(255, 255, 255, 0.12);
-
-            border-radius: 28px;
-
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.55),
-                0 0 0 1px rgba(255, 255, 255, 0.03);
-        }
-
-
-        /* =========================================================
-           HEADER
-        ========================================================= */
-
-        .chat-header {
-
-            position: relative;
-
-            padding: 20px 20px 16px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(18, 74, 42, 0.98),
-                    rgba(10, 54, 31, 0.96)
-                );
-
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-            text-align: center;
-        }
-
-
-        .brand-row {
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 10px;
-        }
-
-
-        .brand-icon {
-
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 13px;
-
-            background:
-                rgba(255, 255, 255, 0.12);
-
-            border: 1px solid rgba(255, 255, 255, 0.18);
-
-            font-size: 22px;
-
-            box-shadow:
-                inset 0 1px rgba(255,255,255,.12);
-        }
-
-
-        .chat-header h1 {
-
-            color: #ffffff;
-
-            font-size: 1.55rem;
-
-            font-weight: 800;
-
-            letter-spacing: -0.6px;
-        }
-
-
-        .brand-subtitle {
-
-            margin-top: 4px;
-
-            color: #bbf7d0;
-
-            font-size: 0.76rem;
-
-            font-weight: 500;
-
-            letter-spacing: 0.3px;
-        }
-
-
-        /* =========================================================
-           USER INFO
-        ========================================================= */
-
-        .user-info {
-
-            margin-top: 12px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 8px;
-
-            font-size: 0.72rem;
-
-            color: #d1fae5;
-        }
-
-
-        .user-dot {
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #4ade80;
-
-            box-shadow:
-                0 0 10px rgba(74, 222, 128, 0.8);
-        }
-
-
-        .logout-link {
-
-            color: #ffffff;
-
-            text-decoration: none;
-
-            font-weight: 600;
-
-            opacity: 0.85;
-
-            transition: 0.2s ease;
-        }
-
-
-        .logout-link:hover {
-
-            opacity: 1;
-
-            text-decoration: underline;
-        }
-
-
-        /* =========================================================
-           LANGUAGE
-        ========================================================= */
-
-        .language-wrapper {
-
-            margin-top: 12px;
-
-            display: flex;
-            justify-content: center;
-        }
-
-
-        #langSelect {
-
-            appearance: none;
-
-            min-width: 150px;
-
-            padding: 8px 34px 8px 13px;
-
-            border-radius: 10px;
-
-            border: 1px solid rgba(255,255,255,.15);
-
-            outline: none;
-
-            background:
-                rgba(255,255,255,.10);
-
-            color: white;
-
-            font-size: 0.74rem;
-
-            cursor: pointer;
-        }
-
-
-        #langSelect option {
-
-            color: #111827;
-
-            background: white;
-        }
-
-
-        /* =========================================================
-           CHAT AREA
-        ========================================================= */
-
-        .chat-box {
-
-            flex: 1;
-
-            padding: 18px;
-
-            overflow-y: auto;
-
-            display: flex;
-            flex-direction: column;
-
-            gap: 12px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(4, 16, 25, 0.92),
-                    rgba(2, 10, 18, 0.97)
-                );
-
-            scrollbar-width: thin;
-            scrollbar-color: #334155 transparent;
-        }
-
-
-        .chat-box::-webkit-scrollbar {
-
-            width: 5px;
-        }
-
-
-        .chat-box::-webkit-scrollbar-thumb {
-
-            background: #334155;
-
-            border-radius: 10px;
-        }
-
-
-        /* =========================================================
-           MESSAGES
-        ========================================================= */
-
-        .message {
-
-            width: fit-content;
-
-            max-width: 82%;
-
-            padding: 10px 13px;
-
-            border-radius: 15px;
-
-            font-size: 0.78rem;
-
-            line-height: 1.5;
-
-            white-space: pre-line;
-
-            animation: messageIn .25s ease;
-
-            word-wrap: break-word;
-        }
-
-
-        .bot {
-
-            align-self: flex-start;
-
-            color: #e5e7eb;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(31, 41, 55, 0.96),
-                    rgba(22, 31, 43, 0.96)
-                );
-
-            border: 1px solid rgba(255,255,255,.07);
-
-            border-top-left-radius: 5px;
-
-            box-shadow:
-                0 5px 15px rgba(0,0,0,.12);
-        }
-
-
-        .user {
-
-            align-self: flex-end;
-
-            color: #052e16;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #4ade80,
-                    #22c55e
-                );
-
-            border-top-right-radius: 5px;
-
-            font-weight: 500;
-
-            box-shadow:
-                0 6px 18px rgba(34,197,94,.18);
-        }
-
-
-        .time {
-
-            margin-top: 5px;
-
-            font-size: 0.59rem;
-
-            opacity: 0.48;
-        }
-
-
-        /* =========================================================
-           WELCOME CARD
-        ========================================================= */
-
-        .welcome-message {
-
-            max-width: 78%;
-
-            padding: 12px 14px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(30, 41, 59, 0.98),
-                    rgba(15, 35, 27, 0.96)
-                );
-
-            border: 1px solid rgba(74,222,128,.12);
-        }
-
-
-        .welcome-title {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            margin-bottom: 4px;
-
-            font-weight: 700;
-
-            color: #ffffff;
-        }
-
-
-        .welcome-title span {
-
-            color: #4ade80;
-        }
-
-
-        /* =========================================================
-           QUICK ACTIONS
-        ========================================================= */
-
-        .quick-heading {
-
-            margin-top: 4px;
-
-            color: #64748b;
-
-            font-size: 0.64rem;
-
-            font-weight: 600;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.8px;
-        }
-
-
-        .quick-area {
-
-            display: grid;
-
-            grid-template-columns: repeat(2, 1fr);
-
-            gap: 8px;
-
-            margin-top: 2px;
-        }
-
-
-        .quick {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            padding: 9px 11px;
-
-            border-radius: 11px;
-
-            border: 1px solid rgba(255,255,255,.07);
-
-            background:
-                rgba(30, 41, 59, 0.76);
-
-            color: #cbd5e1;
-
-            font-size: 0.69rem;
-
-            font-weight: 500;
-
-            cursor: pointer;
-
-            transition:
-                transform .2s ease,
-                background .2s ease,
-                border .2s ease;
-        }
-
-
-        .quick:hover {
-
-            transform: translateY(-2px);
-
-            background:
-                rgba(51, 65, 85, 0.9);
-
-            border-color:
-                rgba(74,222,128,.2);
-        }
-
-
-        .quick-icon {
-
-            width: 25px;
-            height: 25px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 8px;
-
-            background:
-                rgba(74,222,128,.10);
-
-            font-size: 13px;
-        }
-
-
-        /* =========================================================
-           TYPING
-        ========================================================= */
-
-        .typing {
-
-            color: #94a3b8;
-
-            font-size: 0.68rem;
-
-            background: rgba(30,41,59,.65);
-
-            font-style: italic;
-        }
-
-
-        /* =========================================================
-           INPUT AREA
-        ========================================================= */
-
-        .input-area {
-
-            padding: 11px;
-
-            background:
-                rgba(2, 8, 14, 0.97);
-
-            border-top:
-                1px solid rgba(255,255,255,.07);
-        }
-
-
-        .chat-input {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            padding: 6px;
-
-            border-radius: 15px;
-
-            background:
-                rgba(30, 41, 59, 0.72);
-
-            border:
-                1px solid rgba(255,255,255,.08);
-
-            transition: border .2s ease;
-        }
-
-
-        .chat-input:focus-within {
-
-            border-color:
-                rgba(74,222,128,.38);
-
-            box-shadow:
-                0 0 0 3px rgba(34,197,94,.06);
-        }
-
-
-        .chat-input input[type="text"],
-        #userInput {
-
-            flex: 1;
-
-            min-width: 0;
-
-            height: 38px;
-
-            padding: 0 10px;
-
-            border: none;
-
-            outline: none;
-
-            background: transparent;
-
-            color: #f8fafc;
-
-            font-size: 0.76rem;
-        }
-
-
-        #userInput::placeholder {
-
-            color: #64748b;
-        }
-
-
-        .action-btn {
-
-            flex-shrink: 0;
-
-            width: 37px;
-            height: 37px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: none;
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            font-size: 15px;
-
-            transition:
-                transform .2s ease,
-                background .2s ease;
-        }
-
-
-        .action-btn:hover {
-
-            transform: translateY(-1px);
-        }
-
-
-        #micBtn {
-
-            background:
-                rgba(14,165,233,.18);
-
-            color: #38bdf8;
-
-            border:
-                1px solid rgba(14,165,233,.12);
-        }
-
-
-        #micBtn:hover {
-
-            background:
-                rgba(14,165,233,.28);
-        }
-
-
-        .camera-btn {
-
-            background:
-                rgba(168,85,247,.16);
-
-            color: #c084fc;
-
-            border:
-                1px solid rgba(168,85,247,.12);
-        }
-
-
-        .camera-btn:hover {
-
-            background:
-                rgba(168,85,247,.27);
-        }
-
-
-        .send-btn {
-
-            width: auto;
-
-            padding: 0 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #22c55e,
-                    #16a34a
-                );
-
-            color: #022c22;
-
-            font-size: 0.72rem;
-
-            font-weight: 700;
-
-            border:
-                1px solid rgba(74,222,128,.15);
-        }
-
-
-        .send-btn:hover {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #4ade80,
-                    #22c55e
-                );
-        }
-
-
-        /* =========================================================
-           FOOTER STATUS
-        ========================================================= */
-
-        .status-bar {
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            gap: 5px;
-
-            margin-top: 7px;
-
-            color: #475569;
-
-            font-size: 0.58rem;
-        }
-
-
-        .status-dot {
-
-            width: 5px;
-            height: 5px;
-
-            border-radius: 50%;
-
-            background: #22c55e;
-
-            box-shadow:
-                0 0 7px rgba(34,197,94,.7);
-        }
-
-
-        /* =========================================================
-           ANIMATION
-        ========================================================= */
-
-        @keyframes messageIn {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(6px)
-                    scale(.98);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-        }
-
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media (max-width: 600px) {
-
-            body {
-
-                padding: 0;
-
-                background-attachment: scroll;
-            }
-
-
-            .chat-container {
-
-                width: 100%;
-
-                height: 100svh;
-
-                max-height: 100svh;
-
-                border-radius: 0;
-
-                border: none;
-            }
-
-
-            .chat-header {
-
-                padding:
-                    17px
-                    16px
-                    14px;
-            }
-
-
-            .chat-box {
-
-                padding: 14px;
-            }
-
-
-            .message {
-
-                max-width: 88%;
-
-                font-size: 0.77rem;
-            }
-        }
-
-
-        /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
-
-        @media (max-width: 380px) {
-
-            .brand-icon {
-
-                width: 38px;
-                height: 38px;
-            }
-
-
-            .chat-header h1 {
-
-                font-size: 1.35rem;
-            }
-
-
-            .quick {
-
-                font-size: 0.64rem;
-
-                padding: 8px;
-            }
-
-
-            .send-btn {
-
-                padding: 0 12px;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AGROBOT — AI Farming Assistant</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --green:#22c55e;
+    --green-dark:#15803d;
+    --green-light:#86efac;
+    --bg:#07130d;
+    --panel:#0c1c13;
+    --panel2:#10251a;
+    --border:rgba(134,239,172,.14);
+    --text:#f0fdf4;
+    --muted:#94a3a8;
+}
+
+body{
+    min-height:100vh;
+    font-family:"Inter",sans-serif;
+    color:var(--text);
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(2,12,7,.94),
+            rgba(4,35,19,.88)
+        ),
+        url("{{ url_for('static', filename='agro3.png') }}");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app{
+    min-height:100vh;
+    display:flex;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:270px;
+    min-height:100vh;
+    background:rgba(4,18,11,.92);
+    border-right:1px solid var(--border);
+    padding:25px 18px;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:5px 8px 30px;
+}
+
+.logo-icon{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#22c55e,#15803d);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:23px;
+    box-shadow:0 10px 30px rgba(34,197,94,.25);
+}
+
+.logo h1{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:-.5px;
+}
+
+.logo span{
+    display:block;
+    color:var(--green-light);
+    font-size:10px;
+    margin-top:2px;
+    letter-spacing:1px;
+}
+
+.new-chat{
+    width:100%;
+    border:none;
+    padding:13px;
+    border-radius:12px;
+    background:var(--green);
+    color:#052e16;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.new-chat:hover{
+    background:#4ade80;
+    transform:translateY(-1px);
+}
+
+.side-title{
+    color:#64748b;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin:28px 8px 10px;
+}
+
+.side-item{
+    padding:12px;
+    border-radius:10px;
+    color:#cbd5e1;
+    font-size:13px;
+    margin-bottom:4px;
+    cursor:pointer;
+}
+
+.side-item:hover{
+    background:rgba(34,197,94,.08);
+    color:white;
+}
+
+.side-bottom{
+    margin-top:auto;
+}
+
+.status-card{
+    padding:13px;
+    border:1px solid var(--border);
+    background:rgba(16,37,26,.65);
+    border-radius:12px;
+    font-size:12px;
+    color:#cbd5e1;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    background:#22c55e;
+    border-radius:50%;
+    box-shadow:0 0 10px #22c55e;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    height:72px;
+    padding:0 30px;
+    border-bottom:1px solid var(--border);
+    background:rgba(4,18,11,.65);
+    backdrop-filter:blur(15px);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.header-left h2{
+    font-size:17px;
+    font-weight:700;
+}
+
+.header-left p{
+    color:#64748b;
+    font-size:11px;
+    margin-top:3px;
+}
+
+.lang-select{
+    background:#10251a;
+    border:1px solid var(--border);
+    color:white;
+    border-radius:9px;
+    padding:9px 12px;
+    outline:none;
+    cursor:pointer;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat-area{
+    flex:1;
+    width:100%;
+    max-width:950px;
+    margin:auto;
+    padding:30px 25px 20px;
+
+    overflow-y:auto;
+}
+
+.welcome{
+    text-align:center;
+    padding:45px 20px 25px;
+}
+
+.welcome-icon{
+    width:75px;
+    height:75px;
+    margin:0 auto 18px;
+
+    border-radius:24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:38px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34,197,94,.25),
+            rgba(21,128,61,.1)
+        );
+
+    border:1px solid rgba(134,239,172,.15);
+}
+
+.welcome h3{
+    font-size:29px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+.welcome p{
+    color:#94a3b8;
+    font-size:13px;
+    margin-top:8px;
+}
+
+/* =========================
+   QUICK ACTIONS
+========================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin:25px auto 35px;
+    max-width:800px;
+}
+
+.quick{
+    background:rgba(16,37,26,.72);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:15px 10px;
+    color:#d1fae5;
+    cursor:pointer;
+    text-align:left;
+    transition:.2s;
+}
+
+.quick:hover{
+    border-color:rgba(34,197,94,.4);
+    background:rgba(34,197,94,.08);
+    transform:translateY(-2px);
+}
+
+.quick-icon{
+    font-size:20px;
+    margin-bottom:8px;
+}
+
+.quick strong{
+    display:block;
+    font-size:12px;
+}
+
+.quick small{
+    color:#64748b;
+    font-size:10px;
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.message-row{
+    display:flex;
+    margin:16px 0;
+    gap:10px;
+}
+
+.message-row.user-row{
+    justify-content:flex-end;
+}
+
+.avatar{
+    width:32px;
+    height:32px;
+    min-width:32px;
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#12351f;
+    font-size:16px;
+}
+
+.user-row .avatar{
+    order:2;
+    background:#166534;
+}
+
+.message{
+    max-width:75%;
+    padding:13px 16px;
+    border-radius:15px;
+    font-size:13px;
+    line-height:1.65;
+    white-space:pre-line;
+}
+
+.bot-message{
+    background:#10251a;
+    border:1px solid var(--border);
+    color:#e2e8f0;
+    border-top-left-radius:4px;
+}
+
+.user-message{
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+    color:#052e16;
+    font-weight:500;
+    border-top-right-radius:4px;
+}
+
+.time{
+    display:block;
+    margin-top:6px;
+    font-size:9px;
+    opacity:.45;
+}
+
+/* =========================
+   TYPING
+========================= */
+
+.typing{
+    display:flex;
+    gap:4px;
+    align-items:center;
+}
+
+.typing span{
+    width:6px;
+    height:6px;
+    background:#4ade80;
+    border-radius:50%;
+    animation:bounce 1.2s infinite;
+}
+
+.typing span:nth-child(2){
+    animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+    animation-delay:.3s;
+}
+
+@keyframes bounce{
+    0%,60%,100%{
+        transform:translateY(0);
+        opacity:.4;
+    }
+
+    30%{
+        transform:translateY(-5px);
+        opacity:1;
+    }
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.input-wrapper{
+    width:100%;
+    max-width:950px;
+    margin:auto;
+    padding:0 25px 10px;
+}
+
+.input-box{
+    background:rgba(7,25,15,.92);
+    border:1px solid rgba(134,239,172,.18);
+    border-radius:17px;
+    padding:9px;
+
+    display:flex;
+    align-items:center;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.input-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:white;
+    padding:12px;
+    font-size:13px;
+}
+
+.input-box input::placeholder{
+    color:#64748b;
+}
+
+.action-btn{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:11px;
+    background:#10251a;
+    color:#cbd5e1;
+    cursor:pointer;
+    margin-left:5px;
+    transition:.2s;
+}
+
+.action-btn:hover{
+    background:#183b26;
+    color:white;
+}
+
+.send-btn{
+    width:auto;
+    padding:0 17px;
+    background:var(--green);
+    color:#052e16;
+    font-weight:700;
+}
+
+.send-btn:hover{
+    background:#4ade80;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    text-align:center;
+    color:#475569;
+    font-size:9px;
+    padding:7px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .header{
+        padding:0 15px;
+    }
+
+    .chat-area{
+        padding:15px 12px;
+    }
+
+    .welcome{
+        padding-top:25px;
+    }
+
+    .welcome h3{
+        font-size:23px;
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .message{
+        max-width:88%;
+    }
+
+    .input-wrapper{
+        padding:0 10px 8px;
+    }
+
+    .footer{
+        display:none;
+    }
+
+}
+
+@media(max-width:430px){
+
+    .header-left h2{
+        font-size:14px;
+    }
+
+    .lang-select{
+        font-size:11px;
+        padding:7px;
+    }
+
+    .quick-grid{
+        gap:7px;
+    }
+
+    .quick{
+        padding:12px 8px;
+    }
+
+    .input-box{
+        border-radius:14px;
+    }
+
+    .action-btn{
+        width:35px;
+        height:35px;
+    }
+
+    .send-btn{
+        padding:0 11px;
+    }
+}
+</style>
 </head>
-
 
 <body>
 
+<div class="app">
 
-<div class="chat-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-
-    <!-- =========================================================
-         HEADER
-    ========================================================== -->
-
-    <header class="chat-header">
-
-        <div class="brand-row">
-
-            <div class="brand-icon">
-                🌱
-            </div>
+        <div class="logo">
+            <div class="logo-icon">🌱</div>
 
             <div>
-
                 <h1>AGROBOT</h1>
+                <span>AI FARMING ASSISTANT</span>
+            </div>
+        </div>
 
-                <div class="brand-subtitle">
-                    Powered by NexAI
+        <button class="new-chat" onclick="newChat()">
+            ＋ New Consultation
+        </button>
+
+        <div class="side-title">
+            Farming Tools
+        </div>
+
+        <div class="side-item" onclick="quickMsg('Check weather')">
+            🌦️ Weather
+        </div>
+
+        <div class="side-item" onclick="quickMsg('Give fertilizer recommendation')">
+            🧪 Fertilizer Advice
+        </div>
+
+        <div class="side-item" onclick="quickMsg('Suggest a crop')">
+            🌾 Crop Suggestion
+        </div>
+
+        <div class="side-item" onclick="quickMsg('Government schemes for farmers')">
+            📜 Government Schemes
+        </div>
+
+        <div class="side-title">
+            AI Vision
+        </div>
+
+        <div class="side-item" onclick="openCamera()">
+            📷 Detect Plant Disease
+        </div>
+
+        <div class="side-bottom">
+
+            <div class="status-card">
+
+                <div class="status">
+                    <span class="status-dot"></span>
+                    <b>AI System Online</b>
+                </div>
+
+                <div style="margin-top:7px;color:#64748b;">
+                    Powered by Ollama
                 </div>
 
             </div>
 
         </div>
 
-
-        <div class="user-info">
-
-            <span class="user-dot"></span>
-
-            <span>
-                Logged in as
-                <b>
-                    {{ session.get("farmer_name", session.get("username", "Farmer")) }}
-                </b>
-            </span>
-
-            <a
-                class="logout-link"
-                href="{{ url_for('logout') }}"
-            >
-                Logout
-            </a>
-
-        </div>
+    </aside>
 
 
-        <div class="language-wrapper">
+    <!-- MAIN -->
+    <main class="main">
 
-            <select id="langSelect">
+        <!-- HEADER -->
+        <header class="header">
 
-                <option value="auto">
-                    🌐 Auto
-                </option>
+            <div class="header-left">
 
+                <h2>AI Agriculture Assistant</h2>
+
+                <p>
+                    Ask questions about crops, weather & farming
+                </p>
+
+            </div>
+
+            <select id="langSelect" class="lang-select">
+
+                <option value="auto">🌐 Auto</option>
                 <option value="en">English</option>
                 <option value="hi">Hindi</option>
                 <option value="bn">Bengali</option>
@@ -965,461 +684,470 @@
 
             </select>
 
-        </div>
-
-    </header>
+        </header>
 
 
-    <!-- =========================================================
-         CHAT
-    ========================================================== -->
+        <!-- CHAT AREA -->
+        <section class="chat-area" id="chatBox">
 
-    <main
-        class="chat-box"
-        id="chatBox"
-    >
+            <div id="welcome">
+
+                <div class="welcome">
+
+                    <div class="welcome-icon">
+                        🌱
+                    </div>
+
+                    <h3>
+                        How can I help your farm?
+                    </h3>
+
+                    <p>
+                        Ask AGROBOT about crops, fertilizer,
+                        weather or plant diseases.
+                    </p>
+
+                </div>
 
 
-        <!-- Welcome -->
+                <!-- QUICK ACTIONS -->
 
-        <div class="message bot welcome-message">
+                <div class="quick-grid">
 
-            <div class="welcome-title">
-                👋
-                <span>AGROBOT</span>
+                    <button class="quick"
+                            onclick="quickMsg('Check weather')">
+
+                        <div class="quick-icon">🌦️</div>
+
+                        <strong>Weather</strong>
+
+                        <small>Get current weather</small>
+
+                    </button>
+
+
+                    <button class="quick"
+                            onclick="quickMsg('Give fertilizer recommendation')">
+
+                        <div class="quick-icon">🧪</div>
+
+                        <strong>Fertilizer</strong>
+
+                        <small>Get crop advice</small>
+
+                    </button>
+
+
+                    <button class="quick"
+                            onclick="quickMsg('Suggest a crop')">
+
+                        <div class="quick-icon">🌾</div>
+
+                        <strong>Crop Guide</strong>
+
+                        <small>Choose a crop</small>
+
+                    </button>
+
+
+                    <button class="quick"
+                            onclick="quickMsg('Government schemes for farmers')">
+
+                        <div class="quick-icon">📜</div>
+
+                        <strong>Schemes</strong>
+
+                        <small>Farmer benefits</small>
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div>
-                Your AI farming assistant is ready.
-            </div>
+        </section>
 
-            <div>
-                Ask me about crops, weather, fertilizers or diseases.
-            </div>
 
-            <div class="time">
-                Just now
+        <!-- INPUT -->
+
+        <div class="input-wrapper">
+
+            <div class="input-box">
+
+                <input
+                    id="userInput"
+                    type="text"
+                    placeholder="Ask AGROBOT anything about farming..."
+                    autocomplete="off"
+                >
+
+
+                <button
+                    id="micBtn"
+                    class="action-btn"
+                    type="button"
+                    title="Voice input"
+                >
+                    🎙️
+                </button>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    capture="environment"
+                    hidden
+                >
+
+
+                <button
+                    class="action-btn"
+                    onclick="openCamera()"
+                    type="button"
+                    title="Upload plant image"
+                >
+                    📷
+                </button>
+
+
+                <button
+                    class="action-btn send-btn"
+                    onclick="sendMessage()"
+                    type="button"
+                >
+                    Send
+                </button>
+
             </div>
 
         </div>
 
 
-        <!-- Quick Actions -->
-
-        <div class="quick-heading">
-            Quick actions
+        <div class="footer">
+            AGROBOT • AI-powered agricultural assistance • Ollama Local AI
         </div>
-
-
-        <div class="quick-area">
-
-
-            <button
-                class="quick"
-                onclick="quickMsg('Check weather')"
-            >
-
-                <span class="quick-icon">
-                    ☁️
-                </span>
-
-                Weather
-
-            </button>
-
-
-            <button
-                class="quick"
-                onclick="quickMsg('Fertilizer recommendation')"
-            >
-
-                <span class="quick-icon">
-                    🌿
-                </span>
-
-                Fertilizer
-
-            </button>
-
-
-            <button
-                class="quick"
-                onclick="quickMsg('Crop suggestion')"
-            >
-
-                <span class="quick-icon">
-                    🌾
-                </span>
-
-                Crop Suggestion
-
-            </button>
-
-
-            <button
-                class="quick"
-                onclick="quickMsg('Government schemes for farmers')"
-            >
-
-                <span class="quick-icon">
-                    📋
-                </span>
-
-                Schemes
-
-            </button>
-
-
-        </div>
-
 
     </main>
-
-
-    <!-- =========================================================
-         INPUT
-    ========================================================== -->
-
-    <footer class="input-area">
-
-
-        <div class="chat-input">
-
-
-            <input
-                id="userInput"
-                type="text"
-                placeholder="Ask AGROBOT anything..."
-                autocomplete="off"
-            >
-
-
-            <button
-                id="micBtn"
-                class="action-btn"
-                title="Voice input"
-                type="button"
-            >
-                🎙️
-            </button>
-
-
-            <input
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                capture="environment"
-                hidden
-            >
-
-
-            <button
-                class="action-btn camera-btn"
-                onclick="openCamera()"
-                title="Upload crop image"
-                type="button"
-            >
-                📷
-            </button>
-
-
-            <button
-                class="action-btn send-btn"
-                onclick="sendMessage()"
-                type="button"
-            >
-                Send
-            </button>
-
-
-        </div>
-
-
-        <div class="status-bar">
-
-            <span class="status-dot"></span>
-
-            AGROBOT is online
-
-            <span>•</span>
-
-            NexAI
-
-        </div>
-
-
-    </footer>
-
 
 </div>
 
 
-
 <script>
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const chatBox =
-    document.getElementById("chatBox");
-
-const userInput =
-    document.getElementById("userInput");
-
-const micBtn =
-    document.getElementById("micBtn");
-
-const imageInput =
-    document.getElementById("imageInput");
-
-const langSelect =
-    document.getElementById("langSelect");
-
-
-userInput.focus();
-
-
-/* =========================================================
-   LANGUAGE
-========================================================= */
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+const micBtn = document.getElementById("micBtn");
+const imageInput = document.getElementById("imageInput");
+const langSelect = document.getElementById("langSelect");
 
 let currentLang = "auto";
 
 
-langSelect.addEventListener(
-    "change",
-    (e) => {
+/* =========================
+   LANGUAGE
+========================= */
 
-        currentLang =
-            e.target.value;
+langSelect.addEventListener("change", function(e){
 
-    }
-);
+    currentLang = e.target.value;
+
+});
 
 
-/* =========================================================
+/* =========================
    TIME
-========================================================= */
+========================= */
 
 function timeNow(){
 
-    return new Date().toLocaleTimeString(
-        [],
-        {
-            hour: "2-digit",
-            minute: "2-digit"
-        }
-    );
+    return new Date().toLocaleTimeString([], {
+        hour:"2-digit",
+        minute:"2-digit"
+    });
 
 }
 
 
-/* =========================================================
-   ADD MESSAGE
-========================================================= */
+/* =========================
+   MESSAGE
+========================= */
 
-function addMessage(
-    text,
-    sender
-){
+function addMessage(text, sender){
 
-    const msg =
-        document.createElement("div");
+    const row = document.createElement("div");
 
-
-    msg.classList.add(
-        "message",
-        sender
-    );
+    row.className =
+        sender === "user"
+        ? "message-row user-row"
+        : "message-row";
 
 
-    msg.innerHTML =
+    const avatar = document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.innerText =
+        sender === "user"
+        ? "👤"
+        : "🌱";
+
+
+    const message = document.createElement("div");
+
+    message.className =
+        sender === "user"
+        ? "message user-message"
+        : "message bot-message";
+
+
+    message.innerHTML =
         text +
-        `
-        <div class="time">
-            ${timeNow()}
-        </div>
-        `;
+        `<span class="time">${timeNow()}</span>`;
 
 
-    chatBox.appendChild(msg);
+    row.appendChild(avatar);
+    row.appendChild(message);
 
+    chatBox.appendChild(row);
 
-    chatBox.scrollTop =
-        chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight;
 
 }
 
 
-/* =========================================================
-   TYPING INDICATOR
-========================================================= */
+/* =========================
+   TYPING
+========================= */
 
 function showTyping(){
 
-    const typing =
-        document.createElement("div");
+    removeTyping();
+
+    const row = document.createElement("div");
+
+    row.id = "typing";
+    row.className = "message-row";
 
 
-    typing.classList.add(
-        "message",
-        "bot",
-        "typing"
-    );
+    const avatar = document.createElement("div");
+
+    avatar.className = "avatar";
+    avatar.innerText = "🌱";
 
 
-    typing.id =
-        "typing";
+    const message = document.createElement("div");
+
+    message.className = "message bot-message typing";
+
+    message.innerHTML =
+        "<span></span><span></span><span></span>";
 
 
-    typing.innerText =
-        "AGROBOT is thinking...";
+    row.appendChild(avatar);
+    row.appendChild(message);
 
+    chatBox.appendChild(row);
 
-    chatBox.appendChild(
-        typing
-    );
-
-
-    chatBox.scrollTop =
-        chatBox.scrollHeight;
+    chatBox.scrollTop = chatBox.scrollHeight;
 
 }
 
-
-/* =========================================================
-   REMOVE TYPING
-========================================================= */
 
 function removeTyping(){
 
     const typing =
-        document.getElementById(
-            "typing"
-        );
-
+        document.getElementById("typing");
 
     if(typing){
-
         typing.remove();
-
     }
 
 }
 
 
-/* =========================================================
+/* =========================
    SEND MESSAGE
-========================================================= */
+========================= */
 
-function sendMessage(){
+async function sendMessage(){
 
     const text =
         userInput.value.trim();
 
-
-    if(!text){
-
-        return;
-
-    }
+    if(!text) return;
 
 
-    addMessage(
-        text,
-        "user"
-    );
-
+    addMessage(text,"user");
 
     userInput.value = "";
-
 
     showTyping();
 
 
-    fetch(
-        "/chat",
-        {
+    try{
 
-            method: "POST",
+        const response =
+            await fetch("/chat",{
 
-            headers: {
-                "Content-Type":
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
                     "application/json"
-            },
+                },
 
-            body: JSON.stringify({
+                body:JSON.stringify({
 
-                message: text,
+                    message:text,
 
-                lang: currentLang
+                    lang:currentLang
 
-            })
+                })
 
-        }
-    )
-
-
-    .then(
-        response => response.json()
-    )
+            });
 
 
-    .then(
-        data => {
+        if(!response.ok){
 
-            removeTyping();
-
-
-            addMessage(
-                data.reply ||
-                "I couldn't generate a response.",
-                "bot"
+            throw new Error(
+                "Server returned " +
+                response.status
             );
 
         }
-    )
 
 
-    .catch(
-        () => {
-
-            removeTyping();
+        const data =
+            await response.json();
 
 
-            addMessage(
-                "Server error. Please try again.",
-                "bot"
-            );
+        removeTyping();
 
-        }
-    );
+
+        addMessage(
+            data.reply ||
+            "⚠ No response received.",
+            "bot"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "CHAT ERROR:",
+            error
+        );
+
+        removeTyping();
+
+        addMessage(
+            "⚠ Unable to connect to AGROBOT. Please check that Flask and Ollama are running.",
+            "bot"
+        );
+
+    }
 
 }
 
 
-/* =========================================================
-   QUICK ACTION
-========================================================= */
+/* =========================
+   QUICK MESSAGE
+========================= */
 
 function quickMsg(text){
 
-    userInput.value =
-        text;
+    userInput.value = text;
 
     sendMessage();
 
 }
 
 
-/* =========================================================
+/* =========================
+   NEW CHAT
+========================= */
+
+function newChat(){
+
+    chatBox.innerHTML = `
+
+        <div id="welcome">
+
+            <div class="welcome">
+
+                <div class="welcome-icon">
+                    🌱
+                </div>
+
+                <h3>
+                    How can I help your farm?
+                </h3>
+
+                <p>
+                    Ask AGROBOT about crops, weather,
+                    fertilizer or plant diseases.
+                </p>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+                <button class="quick"
+                    onclick="quickMsg('Check weather')">
+
+                    <div class="quick-icon">🌦️</div>
+                    <strong>Weather</strong>
+                    <small>Get current weather</small>
+
+                </button>
+
+
+                <button class="quick"
+                    onclick="quickMsg('Give fertilizer recommendation')">
+
+                    <div class="quick-icon">🧪</div>
+                    <strong>Fertilizer</strong>
+                    <small>Get crop advice</small>
+
+                </button>
+
+
+                <button class="quick"
+                    onclick="quickMsg('Suggest a crop')">
+
+                    <div class="quick-icon">🌾</div>
+                    <strong>Crop Guide</strong>
+                    <small>Choose a crop</small>
+
+                </button>
+
+
+                <button class="quick"
+                    onclick="quickMsg('Government schemes for farmers')">
+
+                    <div class="quick-icon">📜</div>
+                    <strong>Schemes</strong>
+                    <small>Farmer benefits</small>
+
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================
    ENTER KEY
-========================================================= */
+========================= */
 
 userInput.addEventListener(
-    "keypress",
-    (e) => {
+    "keydown",
+    function(e){
 
         if(e.key === "Enter"){
 
@@ -1433,9 +1161,9 @@ userInput.addEventListener(
 );
 
 
-/* =========================================================
-   VOICE RECOGNITION
-========================================================= */
+/* =========================
+   VOICE
+========================= */
 
 const SpeechRecognition =
     window.SpeechRecognition ||
@@ -1447,42 +1175,38 @@ if(SpeechRecognition){
     const recognition =
         new SpeechRecognition();
 
+    recognition.continuous = false;
 
-    recognition.continuous =
-        false;
-
-
-    recognition.interimResults =
-        false;
+    recognition.interimResults = false;
 
 
-    micBtn.onclick = () => {
+    micBtn.onclick = function(){
 
         recognition.lang =
             currentLang === "hi"
-                ? "hi-IN"
-                : currentLang === "bn"
-                ? "bn-IN"
-                : "en-IN";
+            ? "hi-IN"
+            : currentLang === "bn"
+            ? "bn-IN"
+            : currentLang === "ta"
+            ? "ta-IN"
+            : currentLang === "te"
+            ? "te-IN"
+            : "en-IN";
 
 
-        try {
+        try{
 
             recognition.start();
 
             micBtn.style.background =
-                "#ef4444";
+                "#dc2626";
 
             micBtn.innerText =
-                "⏺️";
+                "⏺";
 
-        }
-        catch(error){
+        }catch(error){
 
-            console.log(
-                "Speech recognition error:",
-                error
-            );
+            console.log(error);
 
         }
 
@@ -1490,11 +1214,10 @@ if(SpeechRecognition){
 
 
     recognition.onresult =
-        (e) => {
+        function(e){
 
             userInput.value =
-                e.results[0][0]
-                    .transcript;
+                e.results[0][0].transcript;
 
             sendMessage();
 
@@ -1502,7 +1225,7 @@ if(SpeechRecognition){
 
 
     recognition.onend =
-        () => {
+        function(){
 
             micBtn.style.background =
                 "";
@@ -1514,7 +1237,7 @@ if(SpeechRecognition){
 
 
     recognition.onerror =
-        () => {
+        function(){
 
             micBtn.style.background =
                 "";
@@ -1524,18 +1247,16 @@ if(SpeechRecognition){
 
         };
 
-}
-else{
+}else{
 
-    micBtn.disabled =
-        true;
+    micBtn.disabled = true;
 
 }
 
 
-/* =========================================================
-   CAMERA / IMAGE UPLOAD
-========================================================= */
+/* =========================
+   IMAGE UPLOAD
+========================= */
 
 function openCamera(){
 
@@ -1546,24 +1267,18 @@ function openCamera(){
 
 imageInput.addEventListener(
     "change",
-    function(){
+    async function(){
 
         const file =
             this.files[0];
 
-
-        if(!file){
-
-            return;
-
-        }
+        if(!file) return;
 
 
         addMessage(
-            "📷 Crop image uploaded",
+            "📷 Plant image uploaded",
             "user"
         );
-
 
         showTyping();
 
@@ -1571,12 +1286,10 @@ imageInput.addEventListener(
         const formData =
             new FormData();
 
-
         formData.append(
             "image",
             file
         );
-
 
         formData.append(
             "lang",
@@ -1584,77 +1297,105 @@ imageInput.addEventListener(
         );
 
 
-        fetch(
-            "/detect_disease",
-            {
-                method: "POST",
-                body: formData
-            }
-        )
+        try{
 
-
-        .then(
-            response =>
-                response.json()
-        )
-
-
-        .then(
-            data => {
-
-                removeTyping();
-
-
-                const result = `
-
-                    🌿 <b>Detected Disease:</b>
-                    ${data.disease || "Unknown"}
-
-                    <br>
-
-                    🔍 <b>Symptoms:</b>
-                    ${data.symptoms || "Not detected"}
-
-                    <br><br>
-
-                    💡 ${data.reply || "No recommendation available."}
-
-                `;
-
-
-                addMessage(
-                    result,
-                    "bot"
+            const response =
+                await fetch(
+                    "/detect_disease",
+                    {
+                        method:"POST",
+                        body:formData
+                    }
                 );
 
-            }
-        )
+
+            const data =
+                await response.json();
 
 
-        .catch(
-            () => {
-
-                removeTyping();
+            removeTyping();
 
 
-                addMessage(
-                    "Unable to analyze the image. Please try again.",
-                    "bot"
-                );
+            const result = `
 
-            }
-        );
+                🌿 <b>Detected Disease:</b><br>
+                ${escapeHTML(
+                    data.disease ||
+                    "Unknown"
+                )}
+
+                <br><br>
+
+                🔍 <b>Symptoms:</b><br>
+                ${escapeHTML(
+                    data.symptoms ||
+                    "Not detected"
+                )}
+
+                <br><br>
+
+                💡 <b>Recommendation:</b><br>
+                ${escapeHTML(
+                    data.reply ||
+                    "No recommendation available."
+                )}
+
+            `;
 
 
-        /* Allow the same image to be selected again */
+            addMessage(
+                result,
+                "bot"
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "IMAGE ERROR:",
+                error
+            );
+
+            removeTyping();
+
+            addMessage(
+                "⚠ Unable to analyze the image. Make sure Ollama and the LLaVA model are running.",
+                "bot"
+            );
+
+        }
+
 
         this.value = "";
 
     }
 );
 
+
+/* =========================
+   BASIC HTML ESCAPE
+========================= */
+
+function escapeHTML(value){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        String(value);
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================
+   FOCUS
+========================= */
+
+userInput.focus();
+
 </script>
 
 </body>
-
 </html>
